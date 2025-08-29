@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motivator Adjustment Protocol</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: url('https://via.placeholder.com/400x600/000000/00ff00?text=Star+Wars+Background') no-repeat center center fixed;
+      background-size: cover;
+      color: #00ff00;
+    }
+    #game-container {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border: 2px solid #00ff00;
+      border-radius: 5px;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      background-color: #000;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      width: 60px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #00ff00;
+      color: #000;
+      border: none;
+      border-radius: 3px;
+    }
+    button:hover {
+      background-color: #00cc00;
+    }
+    #result, #feedback {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>MOTIVATOR ADJUSTMENT PROTOCOL</h1>
+    <p>INPUT 4-DIGIT CODE (1-6, NO REPEATS). FEEDBACK: X = CORRECT DIGIT/POSITION, Y = CORRECT DIGIT/WRONG POSITION.</p>
+    <div>
+      <input type="number" id="digit1" placeholder="1st" min="1" max="6">
+      <input type="number" id="digit2" placeholder="2nd" min="1" max="6">
+      <input type="number" id="digit3" placeholder="3rd" min="1" max="6">
+      <input type="number" id="digit4" placeholder="4th" min="1" max="6">
+    </div>
+    <button onclick="checkAnswer()">SUBMIT</button>
+    <div id="feedback"></div>
+    <div id="result"></div>
+  </div>
+  <script>
+    const correctCode = [3, 1, 5, 2];
+    function checkAnswer() {
+      const guess = [
+        parseInt(document.getElementById('digit1').value),
+        parseInt(document.getElementById('digit2').value),
+        parseInt(document.getElementById('digit3').value),
+        parseInt(document.getElementById('digit4').value)
+      ];
+      const resultDiv = document.getElementById('result');
+      const feedbackDiv = document.getElementById('feedback');
+      if (guess.every((d, i) => d === correctCode[i] && d >= 1 && d <= 6)) {
+        resultDiv.innerHTML = 'MOTIVATOR ALIGNED. PASSWORD: <strong>MASTER3152</strong>';
+        resultDiv.style.color = '#00ff00';
+        feedbackDiv.innerHTML = '';
+      } else {
+        let correctPos = 0, correctDigit = 0;
+        const used = Array(4).fill(false);
+        const guessUsed = Array(4).fill(false);
+        // Check correct position
+        for (let i = 0; i < 4; i++) {
+          if (guess[i] === correctCode[i] && guess[i] >= 1 && guess[i] <= 6) {
+            correctPos++;
+            used[i] = true;
+            guessUsed[i] = true;
+          }
+        }
+        // Check correct digit, wrong position
+        for (let i = 0; i < 4; i++) {
+          if (!guessUsed[i] && guess[i] >= 1 && guess[i] <= 6) {
+            for (let j = 0; j < 4; j++) {
+              if (!used[j] && guess[i] === correctCode[j]) {
+                correctDigit++;
+                used[j] = true;
+                break;
+              }
+            }
+          }
+        }
+        feedbackDiv.innerHTML = `FEEDBACK: ${correctPos}X, ${correctDigit}Y`;
+        resultDiv.innerHTML = 'MOTIVATOR MISALIGNED. REINPUT.';
+        resultDiv.style.color = '#ff0000';
+      }
+    }
+  </script>
+</body>
+</html>
