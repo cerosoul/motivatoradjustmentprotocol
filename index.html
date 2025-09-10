@@ -77,7 +77,8 @@
       const resultDiv = document.getElementById('result');
       const feedbackDiv = document.getElementById('feedback');
       if (guess.every((d, i) => d === correctCode[i] && d >= 1 && d <= 6)) {
-        resultDiv.innerHTML = 'MOTIVATOR ALIGNED. PASSWORD: <strong>MASTER3152</strong>';
+        resultDiv.innerHTML = 'MOTIVATOR ALIGNED. PASSWORD: <strong>MASTER3152</strong>' +
+          '<br/><br/> Go to the Speeder Garage to continue.';
         resultDiv.style.color = '#00ff00';
         feedbackDiv.innerHTML = '';
       } else {
